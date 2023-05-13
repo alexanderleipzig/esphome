@@ -19,6 +19,22 @@ static const uint8_t PARTIAL_UPDATE_LUT[LUT_SIZE_WAVESHARE] = {
     0x10, 0x18, 0x18, 0x08, 0x18, 0x18, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x13, 0x14, 0x44, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
+static const uint8_t FULL_UPDATE_LUT_2_90_V1[] = {
+    0x50, 0xAA, 0x55, 0xAA, 0x11, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0xFF, 0xFF, 0x1F, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
+static const uint8_t PARTIAL_UPDATE_LUT_2_90_V1[] = {
+    0x10, 0x18, 0x18, 0x08, 0x18, 0x18,
+    0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x13, 0x14, 0x44, 0x12,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
 static const uint8_t LUT_SIZE_TTGO = 70;
 
 static const uint8_t FULL_UPDATE_LUT_TTGO[LUT_SIZE_TTGO] = {
@@ -276,7 +292,7 @@ void WaveshareEPaperTypeA::init_display_() {
   this->data(0x00);  // ? GD = 0, SM = 0, TB = 0
 
   // COMMAND BOOSTER SOFT START CONTROL
-  this->command(0x0C);
+  this->command(0x0C); //
   this->data(0xD7);
   this->data(0xD6);
   this->data(0x9D);
@@ -385,7 +401,7 @@ void HOT WaveshareEPaperTypeA::display() {
           this->write_lut_(full_update ? FULL_UPDATE_LUT_TTGO_B1 : PARTIAL_UPDATE_LUT_TTGO_B1, LUT_SIZE_TTGO_B1);
           break;
         default:
-          this->write_lut_(full_update ? FULL_UPDATE_LUT : PARTIAL_UPDATE_LUT, LUT_SIZE_WAVESHARE);
+          this->write_lut_(full_update ? FULL_UPDATE_LUT_2_90_V1 : PARTIAL_UPDATE_LUT_2_90_V1, LUT_SIZE_WAVESHARE);
       }
     }
     this->at_update_ = (this->at_update_ + 1) % this->full_update_every_;
@@ -503,7 +519,7 @@ void HOT WaveshareEPaperTypeA::display() {
   }
 
   // COMMAND DISPLAY UPDATE CONTROL 2
-  this->command(0x22);
+  this->command(0x22); //
   switch (this->model_) {
     case WAVESHARE_EPAPER_2_9_IN_V2:
     case WAVESHARE_EPAPER_1_54_IN_V2:
@@ -517,7 +533,7 @@ void HOT WaveshareEPaperTypeA::display() {
       this->data(full_update ? 0xC7 : 0x0C);
       break;
     default:
-      this->data(0xC4);
+      this->data(0xC4); //
       break;
   }
 
